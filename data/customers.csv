@@ -1,0 +1,16 @@
+Customer_ID,Customer_Name,City,Customer_Type 
+C001,Alpha Engineering,Mumbai,Enterprise 
+C002,BlueWave Retail,Pune,SME 
+C003,Crest Manufacturing,Mumbai,Enterprise 
+C004,Delta Distributors,Delhi,Distributor 
+C005,Evergreen Foods,Bengaluru,SME 
+C006,Falcon Industries,Chennai,Enterprise 
+C007,Galaxy Traders,Mumbai,Distributor 
+C008,Horizon Pharma,Hyderabad,Enterprise 
+C009,Indus Components,Pune,Enterprise 
+C010,Jupiter Retail,Delhi,SME 
+C011,Keystone Engineering,Mumbai,SME 
+C012,Lotus Consumer Products,Bengaluru,Enterprise 
+C013,Metro Industrial Supplies,Chennai,Distributor 
+C014,Nova Healthcare,Mumbai,Enterprise 
+C015,Orbit Technologies,Hyderabad,SME

@@ -1,0 +1,17 @@
+Business_Term,Meaning 
+Revenue,Sales_Value 
+Sales,Sales_Value 
+Turnover,Sales_Value 
+Open Orders,Orders where Status is Open 
+Closed Orders,Orders where Status is Closed 
+Cancelled Orders,Orders where Status is Cancelled 
+Key Account,Customer where Customer_Type is Enterprise 
+Enterprise Customer,Customer where Customer_Type is Enterprise 
+SME Customer,Customer where Customer_Type is SME 
+Distributor,Customer where Customer_Type is Distributor 
+Mumbai Sales,Sales from customers where City is Mumbai 
+Western Region,Mumbai and Pune 
+Southern Region,Bengaluru and Chennai 
+Top Customer,Customer having the highest total Sales_Value 
+Order Value,Sales_Value 
+Product Sales,Sales_Value grouped by Product
