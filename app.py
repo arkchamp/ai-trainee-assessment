@@ -140,8 +140,10 @@ def get_query_intent(question):
     avg
     count
     top_customers
+    top_city
     top_products
     list_orders
+    
 
     Rules:
     1. Use ONLY the allowed operations above.
@@ -149,12 +151,23 @@ def get_query_intent(question):
     3. When a business term maps to a dataset field, return the dataset field name.
     Example:
     Revenue -> sales_value
-    4. Do NOT invent filters, statuses, date ranges, assumptions, or business rules.
-    5. Only use information explicitly present in:
+    4. When the user asks for value, revenue, sales, turnover, or order value,
+    use (metric = sales_value) and (operation = sum) unless another operation is explicitly requested.
+    5. Do NOT invent filters, statuses, date ranges, or business rules that are not supported by:
     - User question
     - Business Terms Dictionary
-    6. If a value is not present, return null.
-    7. Return ONLY valid JSON.
+    - Available columns
+    - Available values
+    6. If the question is ambiguous but a reasonable interpretation can be made from:
+    - User question
+    - Business Terms Dictionary
+    - Available columns
+    - Available values
+    then make the assumption and explain it briefly in the assumption field.
+    7. Keep assumption under 10 words.
+    8. Set clarification_needed = true only when no reasonable interpretation exists.
+    9. If a value is not present, return null.
+    10. Return ONLY valid JSON.
 
     JSON Schema:
 
@@ -186,6 +199,10 @@ def get_query_intent(question):
 
     return response.choices[0].message.content
 
-result = get_query_intent("Who are our top 5 customers? ")
-
+# result = get_query_intent("What is revenue from strategic customers?")
+# result = get_query_intent("What is the revenue from distributors?")
+# result = get_query_intent("What is the revenue from Industrial Sensor?")
+# result = get_query_intent("What is the revenue from Mumbai distributors?")
+# result = get_query_intent("What is the average sales?")
+result = get_query_intent("How many open orders are there?")
 print(result)
