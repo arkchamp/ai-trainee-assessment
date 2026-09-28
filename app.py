@@ -89,7 +89,72 @@ client = OpenAI(
 def get_query_intent(question):
 
     prompt = f"""
-    Return ONLY valid JSON.
+    You are working with business data.
+
+    CUSTOMERS COLUMNS:
+    customer_id
+    customer_name
+    city
+    customer_type
+
+    ORDERS COLUMNS:
+    order_id
+    customer_id
+    order_date
+    product
+    quantity
+    sales_value
+    status
+
+    Business Terms Dictionary
+    Key = Business Term
+    Value = Meaning
+
+    {business_dict}
+
+    Available Cities:
+    Mumbai
+    Pune
+    Delhi
+    Bengaluru
+    Chennai
+    Hyderabad
+
+    Available Customer Types:
+    Enterprise
+    SME
+    Distributor
+
+    Available Products:
+    Industrial Sensor
+    Control Unit
+    Automation Panel
+
+    Available Statuses:
+    Open
+    Closed
+    Cancelled
+
+    Allowed Operations:
+    sum
+    avg
+    count
+    top_customers
+    top_products
+    list_orders
+
+    Rules:
+    1. Use ONLY the allowed operations above.
+    2. Do NOT invent operation names.
+    3. When a business term maps to a dataset field, return the dataset field name.
+    Example:
+    Revenue -> sales_value
+    4. Do NOT invent filters, statuses, date ranges, assumptions, or business rules.
+    5. Only use information explicitly present in:
+    - User question
+    - Business Terms Dictionary
+    6. If a value is not present, return null.
+    7. Return ONLY valid JSON.
 
     JSON Schema:
 
@@ -121,6 +186,6 @@ def get_query_intent(question):
 
     return response.choices[0].message.content
 
-result = get_query_intent("What is our total sales?")
+result = get_query_intent("Who are our top 5 customers? ")
 
 print(result)
