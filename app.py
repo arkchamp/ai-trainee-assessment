@@ -234,21 +234,6 @@ def get_query_intent(question):
 
 
 
-# result = get_query_intent("What are our total sales?")  #q1
-# result = get_query_intent("Who are our top 5 customers?")  #q2
-result = get_query_intent("How much revenue came from Mumbai?")  #q3
-# result = get_query_intent("What is the value of Open Orders?")  #q4
-# result = get_query_intent("Which market performed best?")  #q5
-
-# result = get_query_intent("How many open orders are there?")  #extra 1
-# result = get_query_intent("What is the average sales?")   #extra 2
-
-# result = get_query_intent("What is revenue from strategic customers?")  #extra 3
-# result = get_query_intent("What is the revenue from distributors?")  #extra 4
-# result = get_query_intent("What is the revenue from Industrial Sensor?")  #extra 5    
-# result = get_query_intent("What is the revenue from Mumbai distributors?")  #extra 6
-
-
 def execute_query(intent):
     
     df = orders.merge(customers, on="customer_id")
@@ -298,17 +283,97 @@ def execute_query(intent):
     print(df.shape)
     return df
 
+def response_format(question, query_result):
+
+    prompt = f"""
+    You are a business assistant.
+
+    User Question:
+    {question}
+
+    Query Result:
+    {query_result}
+
+    Generate a concise business answer.
+
+    The query result may contain:
+    - a single value
+    - multiple rows
+    - rankings
+    - grouped summaries
+
+    Use the query result to answer naturally.
+
+    Do not invent information.
+
+    Rules:
+    1. Answer using only the query result.
+    2. Do not invent numbers.
+    3. Do not mention technical terms like JSON, intent, dataframe, query, pandas.
+    4. Keep the answer concise.
+    5. If the result contains a ranked list, present it naturally.
+    6. Return only the answer.
+    7. Display sales_value values using ₹ currency format.
+    """
+
+    try:
+
+        response = client.models.generate_content(
+            model="gemini-3.5-flash-lite",
+            contents=prompt
+        )
+
+        return response.text.strip()
+
+    except Exception as e:
+
+        print(f"Error: {e}")
+
+        return "Unable to generate response."
+
+# result = get_query_intent("What are our total sales?")  #q1
+# result = get_query_intent("Who are our top 5 customers?")  #q2
+# result = get_query_intent("How much revenue came from Mumbai?")  #q3
+# result = get_query_intent("What is the value of Open Orders?")  #q4
+# result = get_query_intent("Which market performed best?")  #q5
+
+# result = get_query_intent("How many open orders are there?")  #extra 1
+# result = get_query_intent("What is the average sales?")   #extra 2
+
+# result = get_query_intent("What is revenue from strategic customers?")  #extra 3
+# result = get_query_intent("What is the revenue from distributors?")  #extra 4
+# result = get_query_intent("What is the revenue from Industrial Sensor?")  #extra 5    
+# result = get_query_intent("What is the revenue from Mumbai distributors?")  #extra 6
+
+
 # result = {
-#     "operation": "top_products",
+#     "operation": "top_city",
 #     "metric": "sales_value",
 #     "city": None,
 #     "customer_type": None,
 #     "product": None,
 #     "status": None,
-#     "limit": 3,
-#     "assumption": None,
+#     "limit": 1,
+#     "assumption": "Market interpreted as city",
 #     "clarification_needed": False
 # }
+
+# question = "What are our total sales?"    #q1
+# question = "Who are our top 5 customers?"     #q2
+# question = "How much revenue came from Mumbai?"   #q3
+# question = "What is the value of Open Orders?"    #q4
+question = "Which market performed best?"     #q5
+
+# question = "How many open orders are there?"      #extra 1
+# question = "What is the average sales?"       #extra 2
+# question = "What is revenue from strategic customers?"    #extra 3
+# question = "What is the revenue from distributors?"       #extra 4
+# question = "What is the revenue from Industrial Sensor?"  #extra 5
+# question = "What is the revenue from Mumbai distributors?"     #extra 6
+
+result = get_query_intent(question)
 print(result)
 # print(type(result))
-print(execute_query(result))
+query_result = execute_query(result)
+
+print(response_format(question, query_result))
