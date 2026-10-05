@@ -220,18 +220,19 @@ def get_query_intent(question):
 
 
 
-# result = get_query_intent("What are our total sales?")
-# result = get_query_intent("How much revenue came from Mumbai?")
-# result = get_query_intent("What is the value of Open Orders?")
-# result = get_query_intent("How many open orders are there?")
-# result = get_query_intent("What is the average sales?")
-# result = get_query_intent("Who are our top 5 customers?")
-# result = get_query_intent("Which market performed best?")
+# result = get_query_intent("What are our total sales?")  #q1
+# result = get_query_intent("Who are our top 5 customers?")  #q2
+# result = get_query_intent("How much revenue came from Mumbai?")  #q3
+# result = get_query_intent("What is the value of Open Orders?")  #q4
+# result = get_query_intent("Which market performed best?")  #q5
 
-# result = get_query_intent("What is revenue from strategic customers?")
-# result = get_query_intent("What is the revenue from distributors?")
-# result = get_query_intent("What is the revenue from Industrial Sensor?")
-# result = get_query_intent("What is the revenue from Mumbai distributors?")
+# result = get_query_intent("How many open orders are there?")  #extra 1
+# result = get_query_intent("What is the average sales?")   #extra 2
+
+# result = get_query_intent("What is revenue from strategic customers?")  #extra 3
+# result = get_query_intent("What is the revenue from distributors?")  #extra 4
+# result = get_query_intent("What is the revenue from Industrial Sensor?")  #extra 5    
+result = get_query_intent("What is the revenue from Mumbai distributors?")  #extra 6
 
 
 def execute_query(intent):
@@ -283,17 +284,17 @@ def execute_query(intent):
     print(df.shape)
     return df
 
-result = {
-    "operation": "top_products",
-    "metric": "sales_value",
-    "city": None,
-    "customer_type": None,
-    "product": None,
-    "status": None,
-    "limit": 3,
-    "assumption": None,
-    "clarification_needed": False
-}
-# print(result)
+# result = {
+#     "operation": "top_products",
+#     "metric": "sales_value",
+#     "city": None,
+#     "customer_type": None,
+#     "product": None,
+#     "status": None,
+#     "limit": 3,
+#     "assumption": None,
+#     "clarification_needed": False
+# }
+print(result)
 # print(type(result))
 print(execute_query(result))
