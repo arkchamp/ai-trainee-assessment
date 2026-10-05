@@ -362,7 +362,7 @@ def response_format(question, query_result):
 # question = "Who are our top 5 customers?"     #q2
 # question = "How much revenue came from Mumbai?"   #q3
 # question = "What is the value of Open Orders?"    #q4
-question = "Which market performed best?"     #q5
+# question = "Which market performed best?"     #q5
 
 # question = "How many open orders are there?"      #extra 1
 # question = "What is the average sales?"       #extra 2
@@ -371,9 +371,46 @@ question = "Which market performed best?"     #q5
 # question = "What is the revenue from Industrial Sensor?"  #extra 5
 # question = "What is the revenue from Mumbai distributors?"     #extra 6
 
-result = get_query_intent(question)
-print(result)
-# print(type(result))
-query_result = execute_query(result)
+# result = get_query_intent(question)
+# print(result)
 
-print(response_format(question, query_result))
+# print(type(result))
+
+# query_result = execute_query(result)
+# print(response_format(question, query_result))
+
+#---------------------------------------------------------
+
+import streamlit as st
+st.title("Business Data Assistant")
+
+question = st.text_input("Ask a business question")
+
+if st.button("Get Answer"):
+    if not question.strip():
+        st.warning("Please enter a question.")
+    else:
+            
+
+        with st.spinner("Analyzing your question..."):
+
+            intent = get_query_intent(question)
+
+            if intent["clarification_needed"]:
+                st.warning("Please clarify your question.")
+
+            else:
+
+                query_result = execute_query(intent)
+
+                answer = response_format(
+                    question,
+                    query_result
+                )
+
+                st.success(answer)
+
+                if intent["assumption"]:
+                    st.info(
+                        f"Assumption: {intent['assumption']}"
+                    )
