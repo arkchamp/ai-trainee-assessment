@@ -1,4 +1,4 @@
-# Ai-trainee-assessment
+# Ai-Trainee-Assessment
 A Business Data Assistant that answers business questions from CSV data using natural language.
 
 ## Problem Understanding
