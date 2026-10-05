@@ -218,31 +218,82 @@ def get_query_intent(question):
         # print("Gemini temporarily busy. Try again.")
         return None
 
+
+
+# result = get_query_intent("What are our total sales?")
+# result = get_query_intent("How much revenue came from Mumbai?")
+# result = get_query_intent("What is the value of Open Orders?")
+# result = get_query_intent("How many open orders are there?")
+# result = get_query_intent("What is the average sales?")
+# result = get_query_intent("Who are our top 5 customers?")
+# result = get_query_intent("Which market performed best?")
+
 # result = get_query_intent("What is revenue from strategic customers?")
 # result = get_query_intent("What is the revenue from distributors?")
 # result = get_query_intent("What is the revenue from Industrial Sensor?")
 # result = get_query_intent("What is the revenue from Mumbai distributors?")
-# result = get_query_intent("What is the average sales?")
-# result = get_query_intent("How many open orders are there?")
-# result = get_query_intent("Who are our top 5 customers?")
-# result = get_query_intent("What are our total sales?")
-# result = get_query_intent("How much revenue came from Mumbai?")
-# result = get_query_intent("Which market performed best?")
-# result = get_query_intent("What is the value of Open Orders?")
 
 
+def execute_query(intent):
+    
+    df = orders.merge(customers, on="customer_id")
+    # print(df.columns)
+    # print(df.shape)
+    if intent["status"]:
+        df = df[df["status"] == intent["status"]]
+
+    if intent["product"]:
+        df = df[df["product"] == intent["product"]]
+
+    if intent["city"]:
+        df = df[df["city"] == intent["city"]]
+
+    if intent["customer_type"]:
+        df = df[df["customer_type"] == intent["customer_type"]]
+    print(df.shape)
+    if intent["operation"] == "sum":
+        return df[intent["metric"]].sum()
+    elif intent["operation"] == "avg":
+        return df[intent["metric"]].mean()
+    elif intent["operation"] == "count":
+        return len(df)
+    elif intent["operation"] == "top_customers":
+        return (
+            df.groupby("customer_name")[intent["metric"]]
+            .sum()
+            .sort_values(ascending=False)
+            .head(intent["limit"])
+        )
+    elif intent["operation"] == "top_city":
+        return (
+            df.groupby("city")[intent["metric"]]
+            .sum()
+            .sort_values(ascending=False)
+            .head(intent["limit"])
+        )
+    elif intent["operation"] == "top_products":
+        return (
+            df.groupby("product")[intent["metric"]]
+            .sum()
+            .sort_values(ascending=False)
+            .head(intent["limit"])
+        )
+    elif intent["operation"] == "list_orders":
+        return df
+    print(df.shape)
+    return df
 
 result = {
-    "operation": "sum",
+    "operation": "top_products",
     "metric": "sales_value",
     "city": None,
     "customer_type": None,
     "product": None,
-    "status": "Open",
-    "limit": None,
+    "status": None,
+    "limit": 3,
     "assumption": None,
     "clarification_needed": False
 }
-print(result)
-print(type(result))
+# print(result)
+# print(type(result))
 print(execute_query(result))
