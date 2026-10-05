@@ -1,9 +1,12 @@
 import pandas as pd
 
-from openai import OpenAI
+# from openai import OpenAI
+from google import genai
 from dotenv import load_dotenv
 import os
 import json
+
+
 
 customers = pd.read_csv('data/customers.csv')
 orders = pd.read_csv('data/orders.csv')
@@ -69,8 +72,12 @@ for _, row in business_terms.iterrows():
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
+# client = OpenAI(
+#     api_key=os.getenv("OPENAI_API_KEY")
+# )
+
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
 )
 
 
@@ -187,22 +194,41 @@ def get_query_intent(question):
     {question}
     """
 
-    response = client.chat.completions.create(
-        model="gpt-5-mini",
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    )
+    # response = client.chat.completions.create(
+    #     model="gpt-5-mini",
+    #     messages=[
+    #         {
+    #             "role": "user",
+    #             "content": prompt
+    #         }
+    #     ]
+    # )
 
-    return response.choices[0].message.content
+    # return json.loads(response.choices[0].message.content)
+    try:
+        response = client.models.generate_content(
+        model="gemini-3.8-flash",
+        contents=prompt
+        )
+        cleaned_response = response.text.replace("```json", "").replace("```", "").strip()
+
+        return json.loads(cleaned_response)
+    except Exception as e:
+        print(f"Error: {e}")
+        # print("Gemini temporarily busy. Try again.")
+        return None
 
 # result = get_query_intent("What is revenue from strategic customers?")
 # result = get_query_intent("What is the revenue from distributors?")
 # result = get_query_intent("What is the revenue from Industrial Sensor?")
 # result = get_query_intent("What is the revenue from Mumbai distributors?")
 # result = get_query_intent("What is the average sales?")
-result = get_query_intent("How many open orders are there?")
+# result = get_query_intent("How many open orders are there?")
+# result = get_query_intent("Who are our top 5 customers?")
+# result = get_query_intent("What are our total sales?")
+# result = get_query_intent("How much revenue came from Mumbai?")
+# result = get_query_intent("Which market performed best?")
+result = get_query_intent("What is the value of Open Orders?")
+
+
 print(result)
