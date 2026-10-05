@@ -1,4 +1,4 @@
-# ai-trainee-assessment
+# Ai-trainee-assessment
 A Business Data Assistant that answers business questions from CSV data using natural language.
 
 ## Problem Understanding
@@ -14,7 +14,7 @@ I started by loading the CSV files into Pandas DataFrames. When a user asks a qu
 The extracted intent is then used to perform the required calculations on the data. After getting the result, Gemini is used again to convert the output into a simple business-friendly response.
 
 Finally, the response is shown to the user through a Streamlit web interface.
-
+```text
 User
 ↓
 Streamlit UI
@@ -36,7 +36,7 @@ Business Logic
 Response Formatting
 ↓
 Business Answer
-
+```
 
 ## Technologies Used
 
