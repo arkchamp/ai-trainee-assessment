@@ -171,6 +171,20 @@ def get_query_intent(question):
     - Available columns
     - Available values
     then make the assumption and explain it briefly in the assumption field.
+    6A. If you infer a value for a field, you MUST populate that field.
+    Example:
+   If "Strategic Customer" is interpreted as an Enterprise customer:
+
+    {{
+    "customer_type": "Enterprise",
+    "assumption": "Strategic customer interpreted as Enterprise"
+    }}
+    Do not leave customer_type as null when an inferred value exists.
+    6B. Do NOT populate the assumption field when the result is directly derived from:
+    - Business Terms Dictionary
+    - Available columns
+    - Available values
+    - Explicit prompt rules
     7. Keep assumption under 10 words.
     8. Set clarification_needed = true only when no reasonable interpretation exists.
     9. If a value is not present, return null.
@@ -222,7 +236,7 @@ def get_query_intent(question):
 
 # result = get_query_intent("What are our total sales?")  #q1
 # result = get_query_intent("Who are our top 5 customers?")  #q2
-# result = get_query_intent("How much revenue came from Mumbai?")  #q3
+result = get_query_intent("How much revenue came from Mumbai?")  #q3
 # result = get_query_intent("What is the value of Open Orders?")  #q4
 # result = get_query_intent("Which market performed best?")  #q5
 
@@ -232,7 +246,7 @@ def get_query_intent(question):
 # result = get_query_intent("What is revenue from strategic customers?")  #extra 3
 # result = get_query_intent("What is the revenue from distributors?")  #extra 4
 # result = get_query_intent("What is the revenue from Industrial Sensor?")  #extra 5    
-result = get_query_intent("What is the revenue from Mumbai distributors?")  #extra 6
+# result = get_query_intent("What is the revenue from Mumbai distributors?")  #extra 6
 
 
 def execute_query(intent):
