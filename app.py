@@ -207,7 +207,7 @@ def get_query_intent(question):
     # return json.loads(response.choices[0].message.content)
     try:
         response = client.models.generate_content(
-        model="gemini-3.8-flash",
+        model="gemini-3.5-flash-lite",
         contents=prompt
         )
         cleaned_response = response.text.replace("```json", "").replace("```", "").strip()
@@ -228,7 +228,21 @@ def get_query_intent(question):
 # result = get_query_intent("What are our total sales?")
 # result = get_query_intent("How much revenue came from Mumbai?")
 # result = get_query_intent("Which market performed best?")
-result = get_query_intent("What is the value of Open Orders?")
+# result = get_query_intent("What is the value of Open Orders?")
 
 
+
+result = {
+    "operation": "sum",
+    "metric": "sales_value",
+    "city": None,
+    "customer_type": None,
+    "product": None,
+    "status": "Open",
+    "limit": None,
+    "assumption": None,
+    "clarification_needed": False
+}
 print(result)
+print(type(result))
+print(execute_query(result))
