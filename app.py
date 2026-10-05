@@ -250,7 +250,7 @@ def execute_query(intent):
 
     if intent["customer_type"]:
         df = df[df["customer_type"] == intent["customer_type"]]
-    print(df.shape)
+    # print(df.shape)
     if intent["operation"] == "sum":
         return df[intent["metric"]].sum()
     elif intent["operation"] == "avg":
@@ -280,7 +280,7 @@ def execute_query(intent):
         )
     elif intent["operation"] == "list_orders":
         return df
-    print(df.shape)
+    # print(df.shape)
     return df
 
 def response_format(question, query_result):
@@ -382,9 +382,39 @@ def response_format(question, query_result):
 #---------------------------------------------------------
 
 import streamlit as st
+st.set_page_config(
+    page_title="Business Data Assistant",
+    page_icon="📊",
+    layout="centered"
+)
 st.title("Business Data Assistant")
 
-question = st.text_input("Ask a business question")
+
+
+st.markdown(
+    """
+    Ask questions about sales, customers, products and orders using natural English language.
+    """
+)
+
+st.subheader("Example Questions")
+
+examples = [
+    "What are our total sales?",
+    "Who are our top 5 customers?",
+    "How much revenue came from Mumbai?",
+    "What is the value of Open Orders?",
+    "Which market performed best?"
+]
+
+for q in examples:
+    if st.button(q):
+        st.session_state.question = q
+
+question = st.text_input(
+    "Ask a business question",
+    value=st.session_state.get("question", "")
+)
 
 if st.button("Get Answer"):
     if not question.strip():
@@ -414,3 +444,4 @@ if st.button("Get Answer"):
                     st.info(
                         f"Assumption: {intent['assumption']}"
                     )
+
