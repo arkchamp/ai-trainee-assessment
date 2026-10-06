@@ -421,7 +421,7 @@ if st.button("Get Answer"):
         st.warning("Please enter a question.")
     else:
             
-
+        
         with st.spinner("Analyzing your question..."):
 
             intent = get_query_intent(question)
@@ -430,7 +430,12 @@ if st.button("Get Answer"):
                 st.warning("Please clarify your question.")
 
             else:
+                # Challenge C - Show Interpretation
+                st.subheader("How I Interpreted Your Question")
 
+                for key, value in intent.items():
+                    if value is not None and key not in ["clarification_needed", "assumption"]:
+                        st.write(f"• {key.replace('_', ' ').title()}: {value}")
                 query_result = execute_query(intent)
 
                 answer = response_format(
