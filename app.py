@@ -387,6 +387,54 @@ st.set_page_config(
     page_icon="📊",
     layout="centered"
 )
+
+st.markdown("""
+<style>
+
+.stApp {
+    background-color: #0f172a;
+}
+
+h1 {
+    color: #38bdf8;
+    text-align: center;
+}
+
+.stButton > button {
+    border-radius: 10px;
+    width: 100%;
+}
+
+.stTextInput > div > div > input {
+    border-radius: 10px;
+}
+
+.stTextInput input {
+    background-color: #f8fafc !important;
+    color: black !important;
+}
+
+.stButton > button {
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    background-color: #22c55e !important;
+    color: white !important;
+    border-color: #22c55e !important;
+}
+
+[data-testid="stSuccess"] {
+    border-radius: 10px;
+}
+
+[data-testid="stInfo"] {
+    border-radius: 10px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 st.title("Business Data Assistant")
 
 
@@ -407,9 +455,15 @@ examples = [
     "Which market performed best?"
 ]
 
-for q in examples:
-    if st.button(q):
-        st.session_state.question = q
+col1, col2 = st.columns(2)
+
+for i, q in enumerate(examples):
+    if i % 2 == 0:
+        if col1.button(q, use_container_width=True):
+            st.session_state.question = q
+    else:
+        if col2.button(q, use_container_width=True):
+            st.session_state.question = q
 
 question = st.text_input(
     "Ask a business question",
